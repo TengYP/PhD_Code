@@ -27,7 +27,7 @@ for mm=3:9
                 end
             end
             if type==1
-            %% %·ÖÖÓÊı¾İ
+            %% %åˆ†é’Ÿæ•°æ®
                 [tmp_1, ~, ~] = importdata(fullfile('J:\Z9010\tlogp\2018',file.name),'\t');
                 tmp_2=strfind(tmp_1,'MINUTE');tmp_2(cellfun(@isempty,tmp_2)) = {0};
                 mark=find(cell2mat(tmp_2)~=0);clearvars tmp_1 tmp_2;textscan(fid,'%s',2,'HeaderLines',mark-1);p=0;
@@ -43,11 +43,11 @@ for mm=3:9
                     else
                         p=p+1;
                         sonde(k).data(p,1:9)=txtdata;
-                        %1Ê±¼ä/2ÎÂ¶È/3ÆøÑ¹/4Ïà¶ÔÊª¶È/5·çÏò/6·çËÙ/7¸ß¶È/8¾­¶ÈÆ«²î/9Î³¶ÈÆ«²î
+                        %1æ—¶é—´/2æ¸©åº¦/3æ°”å‹/4ç›¸å¯¹æ¹¿åº¦/5é£å‘/6é£é€Ÿ/7é«˜åº¦/8ç»åº¦åå·®/9çº¬åº¦åå·®
                     end
                 end
             elseif type==2
-            %% %ÃëÊı¾İ
+            %% %ç§’æ•°æ®
                 textscan(fid,'%s',2,'HeaderLines',5);p=1;
                 while 1
                     tmp_1=textscan(fid,'%s',12);
@@ -56,14 +56,14 @@ for mm=3:9
                     if any(isnan(txtdata))
                         continue
                     end
-                    %1Ïà¶ÔÊ±¼ä/2ÎÂ¶È/3ÆøÑ¹/4Ïà¶ÔÊª¶È/5Ñö½Ç/6·½Î»/7¾àÀëkm/8¾­¶ÈÆ«²î/9Î³¶ÈÆ«²î/10·çÏò/11·çËÙ/12¸ß¶È
+                    %1ç›¸å¯¹æ—¶é—´/2æ¸©åº¦/3æ°”å‹/4ç›¸å¯¹æ¹¿åº¦/5ä»°è§’/6æ–¹ä½/7è·ç¦»km/8ç»åº¦åå·®/9çº¬åº¦åå·®/10é£å‘/11é£é€Ÿ/12é«˜åº¦
                     if txtdata(12)>5000
                         sonde(k).time=['2018',num2str(mm,'%02d'),num2str(dd,'%02d'),num2str(hh,'%02d')];
                         break
                     else
                         p=p+1;
                         sonde(k).data(p,1:9)=[txtdata(1:4),txtdata(10:12),txtdata(8:9)];
-                        %1Ê±¼ä/2ÎÂ¶È/3ÆøÑ¹/4Ïà¶ÔÊª¶È/5·çÏò/6·çËÙ/7¸ß¶È/8¾­¶ÈÆ«²î/9Î³¶ÈÆ«²î
+                        %1æ—¶é—´/2æ¸©åº¦/3æ°”å‹/4ç›¸å¯¹æ¹¿åº¦/5é£å‘/6é£é€Ÿ/7é«˜åº¦/8ç»åº¦åå·®/9çº¬åº¦åå·®
                     end
                 end
             end
@@ -125,19 +125,19 @@ set(gca,'XTickLabel',{'Mar','Apr','May','June','July','Aug','Sep'})
 axis([1 214 1 3000])
 
 function Ri=funRi(tem1,tem2,pre1,pre2,hum1,hum2,dir1,dir2,vel1,vel2,alt1,alt2)
-    r1=mixing_ratio(tem1,pre1,hum1);r2=mixing_ratio(tem2,pre2,hum2);%»ìºÏ±È
-    theta1=(tem1+273.15)*((1000/pre1)^0.286);theta2=(tem2+273.15)*((1000/pre2)^0.286);%Î»ÎÂ
-    theta_v1=theta1*(1+0.61*r1-0);theta_v2=theta2*(1+0.61*r2-0);%ĞéÎ»ÎÂ
+    r1=mixing_ratio(tem1,pre1,hum1);r2=mixing_ratio(tem2,pre2,hum2);%æ··åˆæ¯”
+    theta1=(tem1+273.15)*((1000/pre1)^0.286);theta2=(tem2+273.15)*((1000/pre2)^0.286);%ä½æ¸©
+    theta_v1=theta1*(1+0.61*r1-0);theta_v2=theta2*(1+0.61*r2-0);%è™šä½æ¸©
     u1=cosd(dir1)*vel1;v1=sind(dir1)*vel1;u2=cosd(dir2)*vel2;v2=sind(dir2)*vel2;
     z=sqrt(alt1*alt2);
-    Ri_1=9.8/(theta_v1+theta_v1)*0.5;%µÚÒ»Ïî
-    Ri_2=(theta_v1-theta_v2)/(z*log(alt2/alt1));%µÚ¶şÏî
-    Ri_3=((u2-u1)/(z*log(alt2/alt1)))^2+((v2-v1)/(z*log(alt2/alt1)))^2;%µÚÈıÏî
+    Ri_1=9.8/(theta_v1+theta_v1)*0.5;%ç¬¬ä¸€é¡¹
+    Ri_2=(theta_v1-theta_v2)/(z*log(alt2/alt1));%ç¬¬äºŒé¡¹
+    Ri_3=((u2-u1)/(z*log(alt2/alt1)))^2+((v2-v1)/(z*log(alt2/alt1)))^2;%ç¬¬ä¸‰é¡¹
     Ri=Ri_1*Ri_2/Ri_3;
 end
 
 function s=mixing_ratio(t,p,f)
-    E=6.11*10^(7.5*t/(237.15+t));%±¥ºÍË®ÆûÑ¹E(Âê¸ñÅ¬Ë¹¾­Ñé¹«Ê½)
-    e=f*E/100;%Ïà¶ÔÊª¶Èf/Ë®ÆûÑ¹e
-    s=0.622*e/(p-e);%´óÆøÑ¹Á¦p/»ìºÏ±Ès
+    E=6.11*10^(7.5*t/(237.15+t));%é¥±å’Œæ°´æ±½å‹E(ç›æ ¼åŠªæ–¯ç»éªŒå…¬å¼)
+    e=f*E/100;%ç›¸å¯¹æ¹¿åº¦f/æ°´æ±½å‹e
+    s=0.622*e/(p-e);%å¤§æ°”å‹åŠ›p/æ··åˆæ¯”s
 end
